@@ -24,6 +24,16 @@ public class RedisRepositoryConfig {
         return new LettuceConnectionFactory(redisProperties.getHost(), redisProperties.getPort());
     }
 
+//    /**
+//     * redis pub/sub 메시지를 처리하는 listener 설정
+//     */
+//    @Bean
+//    public RedisMessageListenerContainer redisMessageListener(RedisConnectionFactory connectionFactory) {
+//        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+//        container.setConnectionFactory(connectionFactory);
+//        return container;
+//    }
+
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();

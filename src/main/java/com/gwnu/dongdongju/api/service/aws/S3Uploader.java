@@ -1,4 +1,4 @@
-package com.gwnu.dongdongju.api.service;
+package com.gwnu.dongdongju.api.service.aws;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;

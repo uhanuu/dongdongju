@@ -3,6 +3,7 @@ package com.gwnu.dongdongju.api.service;
 import com.gwnu.dongdongju.api.dto.Response;
 import com.gwnu.dongdongju.api.entity.Users;
 import com.gwnu.dongdongju.api.repository.UsersRepository;
+import com.gwnu.dongdongju.api.service.aws.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @RequiredArgsConstructor

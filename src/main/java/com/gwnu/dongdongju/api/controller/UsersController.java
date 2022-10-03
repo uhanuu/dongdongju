@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class UsersController {
     private final UsersService usersService;
     private final UserInfoService userInfoService;
     private final Response response;
+
 
     @PostMapping("/users/sign-up")
     public ResponseEntity<?> signUp(@Validated @RequestBody UserDto userDto, Errors errors) {
