@@ -1,25 +1,33 @@
 package com.gwnu.dongdongju.api.controller;
 
 import com.gwnu.dongdongju.api.dto.Response;
+import com.gwnu.dongdongju.api.entity.Comment;
 import com.gwnu.dongdongju.api.entity.Review;
+import com.gwnu.dongdongju.api.entity.Users;
 import com.gwnu.dongdongju.api.lib.Helper;
+import com.gwnu.dongdongju.api.service.CommentService;
 import com.gwnu.dongdongju.api.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/users")
 @RequiredArgsConstructor
-public class ReviewController {
+public class UsersCommController {
 
     private final ReviewService reviewService;
+    private final CommentService commentService;
     private final Response response;
 
     //    @GetMapping({"", "/"})
@@ -28,13 +36,12 @@ public class ReviewController {
 //        model.addAttribute("board", boardService.findBoardByIdx(idx));
 //        return response.success();
 //    }
-    @PostMapping("/{id}/boards")
-    public ResponseEntity<?> createReview(@PathVariable Long id, @RequestBody Review review, Errors errors) {
-        System.out.println("userid = " + id);
+    @PostMapping("/{userId}/stores/{storeId}/reviews")
+    public ResponseEntity<?> createReview(@PathVariable Long userId,@PathVariable Long storeId, @RequestBody Review review, Errors errors) {
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
-        return reviewService.createBoard(review, id);
+        return reviewService.createBoard(review, userId,storeId);
     }
 
 
@@ -54,4 +61,42 @@ public class ReviewController {
      * 인스턴스를 받아 이 안에 있는 데이터를 가지고 페이징 관련 처리를 하게 됩니다.Model은 View 층에서
      * JSP나 Thymeleaf와 같은 템플릿 엔진이 동적으로 HTML 페이지를 만드는 데 필요한 데이터를 제공해줍니다.
      */
+
+    @PutMapping("/reviews/{id}")
+    public ResponseEntity<?> updateReview(@PathVariable Long id,@RequestBody Review review, Errors errors){
+        if (errors.hasErrors()) {
+            return response.invalidFields(Helper.refineErrors(errors));
+        }
+        return reviewService.updateReview(review, id);
+    }
+
+    @DeleteMapping("/reviews/{id}")
+    public ResponseEntity<?> deleteReview(@PathVariable Long id){
+
+        return reviewService.deleteReview(id);
+    }
+
+
+    @PostMapping("/{userId}/reviews/{reviewId}/comments")
+    public ResponseEntity<?> createComment (@PathVariable Long userId,@PathVariable Long reviewId, @RequestBody Comment comment, Errors errors) {
+        if (errors.hasErrors()) {
+            return response.invalidFields(Helper.refineErrors(errors));
+        }
+        return commentService.createComment(comment, userId, reviewId);
+    }
+
+    @PutMapping("/reviews/comment/{id}")
+    public ResponseEntity<?> updateComment (@PathVariable Long id,@RequestBody Comment comment, Errors errors){
+        if (errors.hasErrors()) {
+            return response.invalidFields(Helper.refineErrors(errors));
+        }
+        return commentService.updateComment(comment, id);
+    }
+
+    @DeleteMapping("/reviews/comment/{id}")
+    public ResponseEntity<?> deleteComment (@PathVariable Long id){
+
+        return commentService.deleteComment(id);
+    }
+
 }

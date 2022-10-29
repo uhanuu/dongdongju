@@ -38,8 +38,15 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     private Users user;
 
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "review")
+    @JoinColumn(name = "store_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Store store;
+
+    @OneToMany(mappedBy = "review")
     private List<Comment> comments;
+
+//    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "review")
+//    private List<Comment> comments;
 
     public void addViewCount() {
         this.viewCount++;
@@ -51,4 +58,12 @@ public class Review {
 //        else
 //            this.numOfComment = 0;
 //    }
+    public void update(String title, String content){
+        this.title = title;
+        this.content = content;
+    }
+    public void updateProfileImg(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
 }
