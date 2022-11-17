@@ -23,6 +23,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-quartz'
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 
@@ -30,6 +32,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.springframework.batch:spring-batch-test'
 
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
@@ -55,6 +58,22 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.webjars:sockjs-client:1.1.2'
 	implementation 'org.webjars:stomp-websocket:2.3.3-1'
+
+	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
+	// http://localhost:8080/swagger-ui/index.html
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+
+	// api monitoring을 위한 actuator
+	// http://localhost:8080/actuator
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.6.2'
+
+	// HAL Browser를 이용한 HATEOAS 기능 구현 spring 상위버전 spring-data-rest-hal-explorer 오류안나서 그냥사용
+	// http://localhost:8080/browser/index.html#/
+	implementation 'org.springframework.data:spring-data-rest-hal-browser:3.3.9.RELEASE'
+
+	//mariadb
+	runtimeOnly("org.mariadb.jdbc:mariadb-java-client:3.0.6")
 }
 
 tasks.named('test') {

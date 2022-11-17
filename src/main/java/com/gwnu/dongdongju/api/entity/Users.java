@@ -17,9 +17,10 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 @Entity
-public class Users extends BaseTime implements UserDetails {
+public class Users implements UserDetails {
 
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -40,6 +41,9 @@ public class Users extends BaseTime implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
@@ -49,7 +53,7 @@ public class Users extends BaseTime implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return nickname;
     }
 
     @Override
@@ -72,7 +76,8 @@ public class Users extends BaseTime implements UserDetails {
         return true;
     }
 
-    public void addProfileImg(String url) {
-        this.profileImg = url;
+    public void updateProfileImg(String profileImg) {
+        this.profileImg = profileImg;
     }
+
 }

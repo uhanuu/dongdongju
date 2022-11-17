@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 public class Comment {
 
     @Id
+    @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -30,6 +32,9 @@ public class Comment {
     @JoinColumn(name = "review_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Review review;
+
+//    @OneToMany(mappedBy = "comment")
+//    private List<Likes> likes;
 
     public void update(String content){
         this.content = content;

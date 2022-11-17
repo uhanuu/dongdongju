@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -19,21 +20,20 @@ public class UserInfoService {
 
     private final UsersRepository usersRepository;
     private final Response response;
-//    private final Users users;
 
     @Autowired private S3Uploader s3Uploader;
 
+
+    //프로필 이미지 업로드//
     @Transactional
-    public ResponseEntity<?> profileImageUpload(MultipartFile image, Users user) //, HttpServletRequest request
+    public ResponseEntity<?> profileImageUpload(MultipartFile image, Long id) //, HttpServletRequest request
             throws IOException {
+                Optional<Users> findUser = usersRepository.findById(id);
 
-        if(!image.isEmpty()) {
+                if(!image.isEmpty()) {
             String storedFileName = s3Uploader.upload(image,"images");
-            user.setProfileImg(storedFileName);
-//            users.addProfileImg(storedFileName);
-
+            findUser.get().updateProfileImg(storedFileName);
         }
-        usersRepository.save(user);
         return response.success("프로필 이미지 변경에 성공했습니다.");
     }
 

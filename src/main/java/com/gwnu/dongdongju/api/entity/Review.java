@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor
@@ -12,58 +12,86 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@Table(name = "place_review")
 public class Review {
 
+    /**
+     * placeId: string, // 카카오에서 제공함 의문 ㄴㄴ
+     * starPoint: number, // 평점
+     * content: string, // 내용
+     * isChecked: {
+     * revisit: boolean, // 재방문의사
+     * taste: boolean, // 맛(만족)
+     * nTaste: boolean, // 맛(불만족)
+     * service: boolean, // 서비스(만족)
+     * nService: boolean, // 서비스(불만족)
+     * hygiene: boolean, // 위생(만족)
+     * nHygiene: boolean, // 위생(불만족)
+     * },
+     * email: string, // 사용자를 구분하기 위한 key,
+     * ㅁ						 // token으로 할지 email로 할지 고민
+     * reviewId: string, // 내가 만들어서 보냄
+     */
     @Id
-    @Column(name = "review_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    @Column(name = "place_id")
+    private String placeId; // 카카오에서 제공
 
-    @Column
-    private String title;
+    private String reviewId; // 형이 만들어서 보냄
 
-    @Column
+    private int starPoint;
     private String content;
+
+
+    private boolean revisit; // 재방문의사
+    private boolean taste; // 맛(만족)
+    private boolean nTaste; // 맛(불만족)
+    private boolean service; // 서비스(만족)
+    private boolean nService; // 서비스(불만족)
+    private boolean hygiene; // 위생(만족)
+    private boolean nHygiene; // 위생(불만족)
+
+
+    @Column
+    private String email;
 
     @Column
     private LocalDateTime date;
 
-    @Column
-    private Long viewCount;
-
-    @Column
-    private String imgUrl;
-
-    @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Users user;
-
-    @JoinColumn(name = "store_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Store store;
-
-    @OneToMany(mappedBy = "review")
-    private List<Comment> comments;
-
-//    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "review")
+//
+//    @JoinColumn(name = "store_id")
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private Store store;
+//
+//    @OneToMany(mappedBy = "review")
 //    private List<Comment> comments;
+//
+//    @OneToMany(mappedBy = "review")
+//    private List<Likes> likesList;
+//
+//    @Column
+//    private Long likes;
 
-    public void addViewCount() {
-        this.viewCount++;
-    }
 
-//    public void addCommentCount(int num) {
-//        if (this.numOfComment + num > 0)
-//            this.numOfComment += num;
-//        else
-//            this.numOfComment = 0;
+//    public void update(String title, String content){
+//        this.title = title;
+//        this.content = content;
 //    }
-    public void update(String title, String content){
-        this.title = title;
-        this.content = content;
-    }
-    public void updateProfileImg(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
+//    public void updateReviewImg(String imgUrl) {
+//        this.imgUrl = imgUrl;
+//    }
+//
+//    //좋아요 개수
+//    public void addLike(){
+//        this.likes++;
+//    }
+//    //종아요 취소
+//    public void cancelLike(){
+//        this.likes--;
+//    }
+//
+//    //조회 수 증가
+//    public void addViewCount(){
+//        this.viewCount++;
+//    }
+//
 }

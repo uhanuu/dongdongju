@@ -32,10 +32,24 @@ public class WebSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/users/sign-up", "/api/guides/sign-up").permitAll()
+                .antMatchers("/api/users/signup").permitAll()
                 .antMatchers("/api/login", "/api/authority", "/api/reissue", "/api/logout").permitAll()
                 .antMatchers("/api/userTest").hasRole("USER")
                 .antMatchers("/api/adminTest").hasRole("ADMIN")
+                .antMatchers("/api/users/**").permitAll()
+                .antMatchers("/api/users/imag").permitAll()
+
+                .antMatchers(
+                        // -- Static resources
+                        "/css/**", "/images/**", "/js/**"
+                        // -- Swagger UI v2
+                        , "/v2/api-docs", "/swagger-resources/**"
+                        , "/swagger-ui.html", "/webjars/**", "/swagger/**", "/swagger-ui/index.html"
+                        // -- Swagger UI v3 (Open API)
+                        , "/v3/api-docs/**", "/swagger-ui/**"
+                )
+                .permitAll()
+
                 .and()
                 // enable h2-console
                 .headers()

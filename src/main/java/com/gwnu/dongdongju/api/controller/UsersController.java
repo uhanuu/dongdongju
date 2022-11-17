@@ -26,7 +26,7 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@RestController
+@RestController // view를 갖지 않을때 rest data -> JSON/XML
 public class UsersController {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -35,7 +35,7 @@ public class UsersController {
     private final Response response;
 
 
-    @PostMapping("/users/sign-up")
+    @PostMapping("/users/signup")
     public ResponseEntity<?> signUp(@Validated @RequestBody UserDto userDto, Errors errors) {
         // validation check
         if (errors.hasErrors()) {
@@ -71,15 +71,16 @@ public class UsersController {
         return usersService.logout(logoutDto);
     }
 
-    @PatchMapping(value = "/users/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    // 파일업로드 보통 put 사용하는데 보안상의 문제로 사용하지 않는다함 예제에는 patch 사용하는데 잘모르겠다.
+    @PatchMapping(value = "/users/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> imageUpload(
-            @RequestParam ("image") MultipartFile image, Users user, HttpServletRequest request, Errors errors)
+            @PathVariable Long id,
+            @RequestParam ("image") MultipartFile image, HttpServletRequest request, Errors errors)
             throws IOException {
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
-//        Long userId = user.getId();
-        return userInfoService.profileImageUpload(image,user);
+        return userInfoService.profileImageUpload(image,id);
     }
 
     @GetMapping("/authority")

@@ -1,5 +1,6 @@
 package com.gwnu.dongdongju.api.dto;
 
+import com.google.gson.JsonObject;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -22,12 +23,25 @@ public class Response {
         private String massage;
         private Object data;
         private Object error;
+//        private Object isChecked;
     }
 
     public ResponseEntity<?> success(Object data, String msg, HttpStatus status) {
         Body body = Body.builder()
                 .state(status.value())
                 .data(data)
+                .result("success")
+                .massage(msg)
+                .error(Collections.emptyList())
+                .build();
+        return ResponseEntity.ok(body);
+    }
+
+    public ResponseEntity<?> rSuccess(Object data, String msg, HttpStatus status) {
+        Body body = Body.builder()
+                .state(status.value())
+                .data(data)
+//                .isChecked(data)
                 .result("success")
                 .massage(msg)
                 .error(Collections.emptyList())

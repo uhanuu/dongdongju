@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -56,14 +57,15 @@ public class UsersService {
                 .roles(Collections.singletonList(Authority.ROLE_USER.name()))
                 .nickname(userDto.getNickname())
                 .build();
-        usersRepository.save(user);
+        Users save = usersRepository.save(user);
 
-        return response.success("회원가입에 성공했습니다.");
+        return response.success(save,"회원가입에 성공했습니다.",HttpStatus.OK);
     }
 
     public ResponseEntity<?> login(LoginDto loginDto) {
+        Optional<Users> userEmail = usersRepository.findByEmail(loginDto.getEmail());
 
-        if (usersRepository.findByEmail(loginDto.getEmail()).orElse(null) == null) {
+        if (userEmail.orElse(null) == null) {
             return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
 
@@ -80,7 +82,9 @@ public class UsersService {
 
         // 4. RefreshToken Redis 저장 (expirationTime 설정을 통해 자동 삭제 처리)
         redisTemplate.opsForValue()
-                .set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
+                .set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(),
+                        tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS
+                                );
 
         return response.success(tokenInfo, "로그인에 성공했습니다.", HttpStatus.OK);
     }

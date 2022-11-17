@@ -26,8 +26,8 @@ public class Store {
     @Column
     private String ImgUrl;
 
-    @OneToMany(mappedBy = "store")
-    private List<Review> reviewList;
+//    @OneToMany(mappedBy = "store")
+//    private List<Review> reviewList;
 
 //    @Column(e)
 ////    @ElementCollection(fetch = FetchType.EAGER)
